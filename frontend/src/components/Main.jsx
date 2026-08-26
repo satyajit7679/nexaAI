@@ -211,7 +211,7 @@ function Navbar({ onAuth }) {
             onClick={() => onAuth("getstarted")}
             className="px-4 py-2 text-sm rounded-lg bg-gradient-to-r from-[#7C3AED] to-[#8B5CF6] text-white font-medium shadow-[0_0_20px_rgba(124,58,237,0.35)] hover:shadow-[0_0_30px_rgba(124,58,237,0.6)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-200"
           >
-            Get Started
+            Sign UP
           </button>
         </div>
 
@@ -250,18 +250,8 @@ function Navbar({ onAuth }) {
                 </a>
               ))}
               <div className="flex flex-col gap-3 pt-2">
-                <button
-                  onClick={() => onAuth("login")}
-                  className="px-4 py-2 text-sm rounded-lg border border-[#1F2937] text-white"
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() => onAuth("getstarted")}
-                  className="px-4 py-2 text-sm rounded-lg bg-gradient-to-r from-[#7C3AED] to-[#8B5CF6] text-white font-medium"
-                >
-                  Get Started
-                </button>
+                <button onClick={() => onAuth("login")}>Login</button>
+                <button onClick={() => navigate("/signup")}>Sign Up</button>
               </div>
             </div>
           </motion.div>
@@ -317,7 +307,7 @@ function Hero({ onAuth }) {
                 onClick={() => onAuth("getstarted")}
                 className="group px-6 py-3 rounded-lg bg-gradient-to-r from-[#7C3AED] to-[#8B5CF6] text-white font-medium shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:shadow-[0_0_35px_rgba(124,58,237,0.65)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2"
               >
-                Get Started
+                Sign UP
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </button>
               <button className="px-6 py-3 rounded-lg border border-[#1F2937] text-white font-medium hover:bg-white/5 hover:border-[#374151] transition-all duration-200 flex items-center justify-center gap-2">
@@ -666,7 +656,7 @@ function Pricing({ onAuth }) {
             <div className="h-full rounded-2xl border border-[#1F2937] bg-[#161B22] p-8 flex flex-col">
               <h3 className="text-white text-xl font-semibold">Free</h3>
               <p className="text-[#94A3B8] text-sm mt-1">
-                Get started at no cost
+                Sign UP at no cost
               </p>
               <ul className="mt-6 space-y-3 flex-1">
                 {["AI Chat", "Coding", "PDF", "Vision", "Limited Requests"].map(
@@ -944,7 +934,14 @@ export default function LandingPage() {
   const [authOpen, setAuthOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleAuth = () => setAuthOpen(true);
+  const handleAuth = (mode) => {
+    if (mode === "getstarted") {
+      navigate("/signup");
+      return;
+    }
+
+    navigate("/login");
+  };
 
   const handleAuthSuccess = () => {
     setAuthOpen(false);

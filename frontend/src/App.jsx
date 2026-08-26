@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 
 import Main from "./components/Main";
 import Home from "./pages/Home";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import VerifyOtp from "./pages/VerifyOtp";
 
 import getCurrentUser from "./features/getCurrentUser";
 import { setUserdata } from "./redux/userSlice";
@@ -32,6 +35,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/chat" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
       </Routes>
     </BrowserRouter>
   );

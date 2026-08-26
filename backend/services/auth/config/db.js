@@ -1,5 +1,6 @@
 import dns from "node:dns";
 import mongoose from "mongoose";
+import User from "../models/user.model.js";
 
 const dnsServers = (process.env.MONGODB_DNS_SERVERS || "1.1.1.1,8.8.8.8")
   .split(",")
@@ -20,6 +21,7 @@ const connectDb = async () => {
         serverSelectionTimeoutMS: 5000,
         family: 4,
       });
+      await User.syncIndexes();
       console.log(`db connected to ${uri}`);
       return;
     } catch (error) {
