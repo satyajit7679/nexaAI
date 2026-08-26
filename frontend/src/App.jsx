@@ -1,28 +1,40 @@
-import { signInWithPopup } from 'firebase/auth'
-import React, { useEffect } from 'react'
-import { auth, googleProvider } from '../utils/firebase'
-import api from '../utils/axios'
-import Home from './pages/Home'
-import getCurrentUser from './features/getCurrentUser'
-import { useDispatch } from 'react-redux'
-import { setUserdata } from './redux/userSlice'
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import Main from "./components/Main";
+import Home from "./pages/Home";
+
+import getCurrentUser from "./features/getCurrentUser";
+import { setUserdata } from "./redux/userSlice";
 
 function App() {
+  const dispatch = useDispatch();
 
-const dispatch=useDispatch()
-useEffect(()=>{
-  const getUser=async ()=>{
-    const data=await getCurrentUser()
-    dispatch(setUserdata(data))
-  }
-  getUser()
-},[])
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const data = await getCurrentUser();
+
+        if (data) {
+          dispatch(setUserdata(data));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getUser();
+  }, [dispatch]);
 
   return (
-   <>
-   <Home/>
-   </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/chat" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

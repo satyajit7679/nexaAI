@@ -1,4 +1,12 @@
+import dns from "node:dns";
 import mongoose from "mongoose";
+
+const dnsServers = (process.env.MONGODB_DNS_SERVERS || "1.1.1.1,8.8.8.8")
+  .split(",")
+  .map((server) => server.trim())
+  .filter(Boolean);
+
+dns.setServers(dnsServers);
 
 const connectDb = async () => {
   const candidates = [
