@@ -7,6 +7,13 @@ import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import { sendOtpEmail } from "../config/mail.js";
 
+const sessionCookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+};
+
 export const login = async (req, res) => {
   try {
     const { token } = req.body;
@@ -54,12 +61,7 @@ export const login = async (req, res) => {
       7 * 24 * 60 * 60,
     );
 
-    res.cookie("session", sessionId, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("session", sessionId, sessionCookieOptions);
 
     return res.status(200).json(user);
   } catch (error) {
@@ -117,12 +119,7 @@ export const emailLogin = async (req, res) => {
       7 * 24 * 60 * 60,
     );
 
-    res.cookie("session", sessionId, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie("session", sessionId, sessionCookieOptions);
 
     return res.status(200).json(user);
   } catch (error) {
