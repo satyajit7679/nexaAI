@@ -7,13 +7,19 @@ import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import { sendOtpEmail } from "../config/mail.js";
 
-const isProduction =
-  process.env.NODE_ENV === "production" || process.env.RENDER === "true";
-const sessionCookieOptions = {
-  httpOnly: true,
-  secure: isProduction,
-  sameSite: isProduction ? "none" : "strict",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
+const getSessionCookieOptions = (req) => {
+  const origin = req.get("origin");
+  const isHttps =
+    req.secure ||
+    req.headers["x-forwarded-proto"] === "https" ||
+    origin?.startsWith("https://");
+
+  return {
+    httpOnly: true,
+    secure: isHttps,
+    sameSite: isHttps ? "none" : "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  };
 };
 
 export const login = async (req, res) => {
@@ -63,7 +69,7 @@ export const login = async (req, res) => {
       7 * 24 * 60 * 60,
     );
 
-    res.cookie("session", sessionId, sessionCookieOptions);
+    res.cookie("session", sessionId, getSessionCookieOptions(req));
 
     return res.status(200).json(user);
   } catch (error) {
@@ -121,7 +127,7 @@ export const emailLogin = async (req, res) => {
       7 * 24 * 60 * 60,
     );
 
-    res.cookie("session", sessionId, sessionCookieOptions);
+    res.cookie("session", sessionId, getSessionCookieOptions(req));
 
     return res.status(200).json(user);
   } catch (error) {
