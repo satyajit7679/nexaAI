@@ -2,6 +2,9 @@ import express from "express"
 import dotenv from "dotenv"
 import connectDb from "./config/db.js"
 import router from "./routes/auth.route.js"
+import dns from "dns";
+
+dns.setDefaultResultOrder("ipv4first");
 dotenv.config()
 
 const PORT = process.env.PORT || 5001;
